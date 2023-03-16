@@ -24,7 +24,15 @@ const routes = [
     path: "/ProductPage",
     name: "ProductPage",
     component: ProductPage,
+    meta: {
+      requiresAuth: true,
+    }
   },
+  // {
+  //   path: "/:catchAll(.*)",
+  //   name: "ErrorPage",
+  //   component: ErrorPage
+  // }
 ];
 
 const router = createRouter({
