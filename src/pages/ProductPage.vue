@@ -1,29 +1,79 @@
 <template>
-    <NavBar/>
-    <div>
-
-        <h1>This is the product page</h1>
-        
+  <NavBar />
+  <RouterLink />
+  <div class="main">
+    <div class="product">
+      <!-- <font-awesome-icon icon="fa-solid fa-user-secret" width="30" /> -->
+      <div>
+        <h1>
+          Welcome
+          <span class="user"> {{ user }}</span>
+        </h1>
+        <h2 class="text">These are your available products</h2>
+      </div>
     </div>
+  </div>
+
+  <div>
+    <div v-if="loading">
+      <p>Loading...</p>
+    </div>
+    <div v-else>
+      <div
+        @click="
+          () => $router.push({ name: 'product', params: { id: product.id } })
+        "
+        v-for="product in products"
+        :key="product.id"
+      >
+        <ProductCard :product="product" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-export default{
-    name: "ProductPage",
-    components: {
-        NavBar,
-    },
-    data() {
-        return {
-            product: {
-                name: "Product Name",
-                image: "https://images.unsplash.com/photo-1611831924381-8b1b2f1b1f1a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-                description: "Product Description",
-                price: "Product Price"
-            }
-        }
-    },
-   
-}
+import ProductCard from "@/components/ProductCard.vue";
+import { RouterLink } from "vue-router";
+import { mapState } from "vuex";
+
+export default {
+  name: "ProductPage",
+  components: {
+    NavBar,
+    ProductCard,
+    RouterLink,
+  },
+  computed: {
+    ...mapState("auth", {
+      user: (state) => state.user.username,
+    }),
+    ...mapState("products", {
+      loading: (state) => state.isLoading,
+      products: (state) => state.products.products,
+    }),
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+  mounted() {
+    console.log(this.user);
+    this.$store.dispatch("products/getProducts");
+    console.log(localStorage.getItem("isLoggedIn"));
+  },
+};
 </script>
+
+<style scoped>
+.main {
+  display: flex;
+  flex-direction: row;
+}
+
+img {
+  width: 100%;
+  height: 100vh;
+}
+</style>

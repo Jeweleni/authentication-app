@@ -1,25 +1,52 @@
-export default{
+export default {
     namespaced: true,
-    state(){
-        return{
-            isAuthentcated: false,
-            payload: {
-                email: "",
-                password: "",
-                firstname: "",
-                lastname: "",
-            }
-        };
-    },
-    mutations: {    
-        registerUser(state, payload){
-            state.payload = payload;
-           localStorage.setItem("payload", JSON.stringify(payload));
+    state() {
+      return {
+        isLoggedIn: false,
+        user: {
+          email: "",
+          password: "",
         },
-        loginUser(state){
-            state.isAuthentcated = true;
-            localStorage.setItem("state", JSON.stringify(state));
-        }
+      };
     },
-
-};
+    mutations: {
+      register(state, user) {
+        state.user = user;
+        localStorage.setItem("user", JSON.stringify(user));
+      },
+      login(state, status) {
+        state.isLoggedIn = status;
+        localStorage.setItem("isLoggedIn", JSON.parse(status));
+      },
+      intializeState(state) {
+        if (localStorage.getItem("isLoggedIn") && localStorage.getItem("user")) {
+          state.isLoggedIn = localStorage.getItem("isLoggedIn");
+          state.user = JSON.parse(localStorage.getItem("user"));
+        }
+      },
+      clearUser(state) {
+        state.user = {
+       
+          email: "",
+          password: "",
+        };
+        state.isLoggedIn = false;
+        localStorage.setItem("isLoggedIn", false);
+        localStorage.setItem("user", JSON.stringify(state.user));
+      },
+      logout(state) {
+        state.isLoggedIn = false;
+        localStorage.setItem("isLoggedIn", false);
+        state.user = {
+          email: "",
+          password: "",
+        };
+      },
+    },
+    actions: {
+      login({ commit }, status) {
+        commit("login", status);
+      },
+    },
+    getters: {},
+  };

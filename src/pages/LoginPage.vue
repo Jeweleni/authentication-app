@@ -4,21 +4,22 @@
     <div class="left">
       <h1>Welcome Back</h1>
       <h3>Login to continue</h3>
-      <form>
+      <form @submit.prevent="onLogin">
         <div class="login">
           <label for="email">Email</label>
           <input type="email" required id="email" v-model="email" />
+        </div>
+        <div v-if="error">
+          <p class="error">{{ errors.email }}</p>
         </div>
         <div class="login">
           <label for="password">Password</label>
           <input type="password" required id="password" v-model="password" />
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          @click="login"
-          onclick="event.preventDefault();"
-        >
+        <div v-if="errors.password">
+          <p class="error">{{ errors.password }}</p>
+        </div>
+        <button type="submit">
           Submit
         </button>
       </form>
@@ -36,26 +37,49 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import { RouterLink } from "vue-router";
+import SignupValidations from "@/utils/SignupValidations.js";
+import { useToast } from "vue-toastification";
 export default {
   name: "LoginPage",
   components: {
     NavBar,
+    RouterLink,
   },
   data() {
     return {
       email: "",
       password: "",
+      errors: [],
+      user: [],
     };
   },
   methods: {
-    login() {
-      this.$store.commit("auth/loginUser", {
-        email: this.email,
-        password: this.password,
-      });
-      alert("Login Successful");
-      this.$router.push("/");
+   onLogin() {
+      let validations = new SignupValidations(this.email, this.password);
+      const toast = useToast();
+      this.errors = validations.checkValidations();
+      if (this.errors.length) {
+        return false;
+      }
+      if (
+        this.email === this.user.email &&
+        this.password === this.user.password
+      ) {
+        this.$store.commit("auth/login");
+        location.reload();
+        this.$router.push("/products");
+        toast.success("Login Successful");
+      } else {
+        toast.error("Invalid Credentials");
+      }
     },
+  },
+  mounted() {
+    var user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.user = user;
+    }
   },
 };
 </script>
@@ -103,7 +127,7 @@ h3 {
 }
 
 .login input {
-  width: 250px;
+  width: 300px;
   height: 40px;
   /* padding: 5px; */
   border: 1px solid black;
@@ -114,7 +138,7 @@ h3 {
   border-radius: 12px;
 }
 button {
-  width: 250px;
+  width: 300px;
   height: 40px;
   /* padding: 5px; */
   margin-right: auto;
@@ -124,7 +148,14 @@ button {
   cursor: pointer;
   border-radius: 12px;
 }
-
+.signup{
+ margin-left: 10%;
+  font-family: cursive;
+  font-size: 20px;
+  margin-top: 0%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .signup a {
   text-decoration: none;
   color: rgb(42, 106, 45);
@@ -136,7 +167,6 @@ button {
   }
   .left {
     width: 100%;
- 
   }
 
   img {
@@ -144,14 +174,9 @@ button {
   }
   .login input {
     width: 80%;
-
   }
   button {
     width: 80%;
   }
 }
-  
 </style>
-
-
-

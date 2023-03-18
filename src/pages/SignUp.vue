@@ -4,34 +4,30 @@
     <div class="left">
       <h1>WELCOME!!!</h1>
       <h3>Sign up to create your account</h3>
-      <form>
+      <form @submit.prevent="onRegister()">
         <div class="signup">
-          <label for="name">Name</label>
-          <input type="name" required id="name" v-model="name" />
+          <label for="name">Username</label>
+          <input type="name" required id="name" v-model="username" />
+        </div>
+         <div v-if="errors.username">
+          <p class="error">{{ errors.username }}</p>
         </div>
         <div class="signup">
           <label for="email">Email</label>
           <input type="email" required id="email" v-model="email" />
         </div>
+          <div v-if="errors.email">
+          <p class="error">{{ errors.email }}</p>
+        </div>
         <div class="signup">
           <label for="password">Password</label>
           <input type="password" required id="password" v-model="password" />
         </div>
-        <div class="signup">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="confirmPassword"
-            required
-            id="confirmPassword"
-            v-model="confirmPassword"
-          />
+         <div v-if="errors.password">
+          <p class="error">{{ errors.password }}</p>
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          @click="signUp"
-          onclick="event.preventDefault();"
-        >
+
+        <button type="submit">
           Submit
         </button>
       </form>
@@ -49,32 +45,53 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import { mapActions } from "vuex";
+import { RouterLink} from "vue-router";
+import SignupValidations from "../utils/SignupValidations";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "SignUp",
   components: {
     NavBar,
+    RouterLink,
+
   },
   data() {
     return {
-      name: "",
+      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      errors: [],
     };
   },
 
   methods: {
-    signUp() {
-      this.$store.commit("auth/registerUser", {
-        name: this.name,
-        // name: this.lname,
+    ...mapActions({
+      register: "auth/signup",
+    }),
+    onRegister() {
+      const toast = useToast();
+      let validations = new SignupValidations(
+        this.email,
+        this.password,
+        this.username
+      );
+      this.errors = validations.checkValidations();
+      if (this.errors.length) {
+        return false;
+      }
+      this.$store.commit("auth/signup", {
         email: this.email,
         password: this.password,
+        username: this.username,
       });
-      alert("You have successfully signed up!");
-      this.$router.push("/");
+      toast.success("You have successfully signed up");
+      this.$router.push("/products");
     },
+  },
+  mounted() {
+    this.$store.commit("auth/clearUser");
   },
 };
 </script>
@@ -110,32 +127,32 @@ img {
 
 h1 {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 40px;
   color: rgb(42, 106, 45);
   font-family: "Roboto", sans-serif;
 }
 h3 {
   text-align: left;
-  margin-top: 30px;
+  margin-top: 20px;
   color: rgb(12, 24, 13);
   font-family: "Roboto", sans-serif;
 }
 
 
 .signup input {
-  width: 250px;
+  width: 300px;
   height: 40px;
   /* padding-left: 20px; */
   border: 1px solid black;
   /* margin-right: auto; */
   display: flex;
   /* margin-left: auto; */
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-radius: 12px;
 }
 
 button {
-  width: 250px;
+  width: 300px;
   height: 40px;
   /* padding-left: 20px; */
   margin-right: auto;
@@ -149,7 +166,9 @@ button {
   margin-left: 10%;
   font-family: cursive;
   font-size: 20px;
-  margin-top: 10px;
+  margin-top: 0%;
+  margin-left: auto;
+  margin-right: auto;
   
 }
 
@@ -175,5 +194,25 @@ button {
   button {
     width: 80%;
   }
+}
+
+@media screen and (max-width: 1024){
+  .main {
+    flex-direction: column;
+  }
+  .left {
+    width: 100%;
+  }
+
+  img {
+    display: none;
+  }
+  .signup input {
+    width: 80%;
+  }
+  button {
+    width: 80%;
+  }
+  
 }
 </style>
