@@ -5,12 +5,13 @@
     <img 
     v-bind="image in images" 
     :src="images.url"
+    alt="product"
     />
   </div>
 </template>
 <script>
 import NavBar from "@/components/NavBar.vue";
-import { useRoute } from "vue-router";
+import { useRoute} from "vue-router";
 import axios from "axios";
 
 export default {

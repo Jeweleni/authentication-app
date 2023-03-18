@@ -6,6 +6,8 @@ import ProductPage from "../pages/ProductPage.vue";
 import ProductDetails from "../pages/ProductDetails.vue";
 import ErrorPage from "../pages/ErrorPage.vue";
 import ProductImages from "../components/ProductImages.vue";
+import store from "@/store/store";
+
 const routes = [
   {
     path: "/",
@@ -31,7 +33,7 @@ const routes = [
     },
   },
   {
-    path: "/productpage",
+    path: "/products",
     name: "Products",
     component: ProductPage,
     meta: {
@@ -40,8 +42,8 @@ const routes = [
     },
   },
   {
-    path: "/productdetails/:id",
-    name: "Product",
+    path: "/products/:id",
+    name: "product",
     component: ProductDetails,
     meta: {
       tittle: "Product",
@@ -51,7 +53,7 @@ const routes = [
       {
         path: "images/:id",
         component: ProductImages,
-        name: "ProductImages",
+        name: "product-images",
         props: true,
       },
      
@@ -64,20 +66,21 @@ const routes = [
   }
 ];
 
+
 const router = createRouter({ history: createWebHistory(), routes });
-var isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
-console.log(isLoggedIn);
+
 router.beforeEach((to, from, next) => {
-  if (
-    "authIsRequired" in to.meta &&
-    to.meta.authIsRequired &&
-    isLoggedIn === true
-  ) {
+  const requiresAuth = to.matched.some((record) => record.meta.authIsRequired);
+  var isAuthenticated = store.getters["auth/isAuthenticated"];
+  console.log(isAuthenticated);
+  // const isAuthenticated = store.getters.isAuthenticated
+
+  if ("authIsRequired" in to.meta && requiresAuth && isAuthenticated !== true) {
     next("/login");
   } else if (
     "authIsRequired" in to.meta &&
-    !to.meta.authIsRequired &&
-    isLoggedIn === true
+    !requiresAuth &&
+    isAuthenticated === true
   ) {
     next("/products");
   } else {

@@ -1,52 +1,60 @@
+import { useToast } from "vue-toastification";
+import router from "../router";
+const toast = useToast();
+const USER_KEY = "user";
 export default {
-    namespaced: true,
-    state() {
-      return {
-        isLoggedIn: false,
-        user: {
-          email: "",
-          password: "",
-        },
-      };
+  namespaced: true,
+  state: {
+    isAuthenticated: false,
+    user: null,
+  },
+  mutations: {
+    setUser(state, user) {
+      state.user = user;
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
     },
-    mutations: {
-      register(state, user) {
-        state.user = user;
-        localStorage.setItem("user", JSON.stringify(user));
-      },
-      login(state, status) {
-        state.isLoggedIn = status;
-        localStorage.setItem("isLoggedIn", JSON.parse(status));
-      },
-      intializeState(state) {
-        if (localStorage.getItem("isLoggedIn") && localStorage.getItem("user")) {
-          state.isLoggedIn = localStorage.getItem("isLoggedIn");
-          state.user = JSON.parse(localStorage.getItem("user"));
-        }
-      },
-      clearUser(state) {
-        state.user = {
-       
-          email: "",
-          password: "",
-        };
-        state.isLoggedIn = false;
-        localStorage.setItem("isLoggedIn", false);
-        localStorage.setItem("user", JSON.stringify(state.user));
-      },
-      logout(state) {
-        state.isLoggedIn = false;
-        localStorage.setItem("isLoggedIn", false);
-        state.user = {
-          email: "",
-          password: "",
-        };
-      },
+    clearUser(state) {
+      state.user = null;
+      localStorage.removeItem(USER_KEY);
     },
-    actions: {
-      login({ commit }, status) {
-        commit("login", status);
-      },
+    setIsAuthenticated(state, isAuthenticated) {
+      state.isAuthenticated = isAuthenticated;
     },
-    getters: {},
-  };
+  },
+  actions: {
+    async signup({ commit }, user) {
+      // simulate async signup request
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      commit("setUser", user);
+      // commit("setIsAuthenticated", true);
+      toast.success("You have successfully registered");
+      router.push("/login");
+    },
+    async login({ state, commit }, { email, password }) {
+      // simulate async login request
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const user = state.user;
+      if (user && user.email === email && user.password === password) {
+        commit("setIsAuthenticated", true);
+        toast.success("Login Successful");
+        router.push("/products");
+      } else {
+        // alert("Invalid email or password");
+        toast.error("Invalid email or password");
+      }
+    },
+    logout({ commit }) {
+      commit("setIsAuthenticated", false);
+      router.push("/login");
+      toast.success("Logout Successful");
+    },
+  },
+  getters: {
+    user(state) {
+      return state.user;
+    },
+    isAuthenticated(state) {
+      return state.isAuthenticated;
+    },
+  },
+};

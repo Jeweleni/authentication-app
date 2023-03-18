@@ -7,15 +7,17 @@
       <li class="navlinks" v-if="isLoggedIn !== true">
         <router-link to="/login">Login</router-link>
       </li>
+      
       <li class="navlinks">
         <router-link to="/signup">Register</router-link>
       </li>
       <li class="navlinks" v-if="isLoggedIn === true">
         <router-link to="/products">Products</router-link>
       </li>
-      <li v-if="isLoggedIn == true" @click="onLogout()" class="logout">
-        <a href="/">Logout</a>
+       <li v-if="isLoggedIn === true" @click="onLogout()" class="logout">
+        <router-link to="/">Log Out</router-link>
       </li>
+     
       
     </ul>
   </nav>
@@ -23,6 +25,7 @@
 
 <script>
 import { mapState } from "vuex";
+import {RouterLink} from "vue-router";
 import { useToast } from "vue-toastification";
 // import { Slide } from "vue-burger-menu";
 export default {
@@ -32,15 +35,18 @@ export default {
     onLogout() {
       const toast = useToast();
       this.$store.commit("auth/logout");
-      this.$router.push("/");
       toast.success("Logout Successful");
     },
+  },
+  components: {
+    RouterLink,
   },
   computed: {
     ...mapState("auth", {
       isLoggedIn: (state) => state.isLoggedIn,
     }),
   },
+  mounted(){},
 };
 </script>
 

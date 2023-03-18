@@ -7,22 +7,20 @@
         the digital you
       </h2>
       <button>
-        <a href="/products">View Products</a>
+      <router-link to="/login" class="button"> View Products </router-link>
       </button>
     </div>
-     <p class="footer">
-    @EMJCREATES AltSchool 3rd semester exam 2023
-  </p>
   </div>
- 
 </template>
 
 <script>
 import NavBar from "../components/NavBar.vue";
+import {RouterLink} from "vue-router";
 export default {
   name: "HomePage",
   components: {
     NavBar,
+    RouterLink,
   },
 };
 </script>
@@ -71,7 +69,7 @@ export default {
   padding-left: 140px;
   font-family: "Roboto", sans-serif;
 }
-.footer{
+.footer {
   color: rgb(0, 0, 0);
   font-size: 20px;
   text-align: left;
@@ -84,36 +82,32 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    max-width: 100%;
     width: 100%;
     height: 100vh;
   }
- h2{
-    font-size: 20px;
-    padding-top: 150px;
-    padding-left: 70px;
-    font-family: "Roboto", sans-serif;
-    width: 70%;
- }
-  .text {
-    font-size: x-small;
-    padding-top: 150px;
-    padding-left: 80px;
-    font-family: "Roboto", sans-serif;
-    width: 70%;
+  .main {
+    display: flex;
+    flex-direction: column;
+    margin-left: -30px;
+    margin-top: -100px;
+    gap: 10px;
   }
-  
-  .main button {
-
-    margin-left: 40px;
+  .text {
+    color: rgb(0, 0, 0);
+    font-size: 50px !important;
+    padding-top: 200px;
+    padding-left: 120px;
+    margin: 0%;
+  }
+  button {
+    width: 200px;
+    height: 50px;
+    margin-left: 120px;
     background-color: rgb(42, 106, 45);
     color: white;
     border-radius: 10px;
     border: none;
   }
-  /* .footer{
-      padding-top: 400px;
-  } */
 }
 
 @media screen and (max-width: 1024px) {
@@ -141,8 +135,8 @@ export default {
     border-radius: 10px;
     border: none;
   }
-  .footer{
-      padding-top: 360px;
+  .footer {
+    padding-top: 360px;
   }
 }
 </style>

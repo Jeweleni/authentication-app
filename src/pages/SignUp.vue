@@ -68,7 +68,7 @@ export default {
 
   methods: {
     ...mapActions({
-      register: "auth/signup",
+      // register: "auth/signup",
     }),
     onRegister() {
       const toast = useToast();
@@ -81,13 +81,13 @@ export default {
       if (this.errors.length) {
         return false;
       }
-      this.$store.commit("auth/signup", {
+      this.$store.dispatch("auth/signup", {
         email: this.email,
         password: this.password,
         username: this.username,
       });
       toast.success("You have successfully signed up");
-      this.$router.push("/products");
+      this.$router.push("/login");
     },
   },
   mounted() {

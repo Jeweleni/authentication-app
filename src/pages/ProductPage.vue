@@ -7,7 +7,7 @@
       <div>
         <h1>
           Welcome
-          <span class="user"> {{ user }}</span>
+          <span class="user"> {{ user.name }}</span>
         </h1>
         <h2 class="text">These are your available products</h2>
       </div>
@@ -37,6 +37,8 @@ import NavBar from "@/components/NavBar.vue";
 import ProductCard from "@/components/ProductCard.vue";
 import { RouterLink } from "vue-router";
 import { mapState } from "vuex";
+// import authenTicatedUser from "../composables/authenTicatedUser";
+
 
 export default {
   name: "ProductPage",
@@ -46,9 +48,13 @@ export default {
     RouterLink,
   },
   computed: {
-    ...mapState("auth", {
-      user: (state) => state.user.username,
-    }),
+    // ...mapState("auth", {
+    //   user: (state) => state.user.username,
+    // }),
+
+    user() {
+      return this.$store.getters["auth/user"]
+    },
     ...mapState("products", {
       loading: (state) => state.isLoading,
       products: (state) => state.products.products,
@@ -59,9 +65,8 @@ export default {
   },
   methods: {},
   mounted() {
-    console.log(this.user);
     this.$store.dispatch("products/getProducts");
-    console.log(localStorage.getItem("isLoggedIn"));
+    console.log(this.$store.getters["auth/user"]);
   },
 };
 </script>

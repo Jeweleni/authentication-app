@@ -1,6 +1,12 @@
 <template>
+
   <RouterView />
   <RouterLink />
+   <p class="footer">
+    @EMJCREATES AltSchool 3rd semester exam 2023
+  </p>
+
+   
 </template>
 
 <script>
@@ -14,7 +20,7 @@ export default {
     RouterLink,
   },
   mounted() {
-    this.$store.commit("auth/intializeState");
+    this.$store.getters("auth/intializeState");
   },
 };
 </script>

@@ -19,9 +19,7 @@
         <div v-if="errors.password">
           <p class="error">{{ errors.password }}</p>
         </div>
-        <button type="submit">
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
       <p class="signup">
         Don't have an account?
@@ -55,31 +53,35 @@ export default {
     };
   },
   methods: {
-   onLogin() {
+    onLogin() {
       let validations = new SignupValidations(this.email, this.password);
       const toast = useToast();
       this.errors = validations.checkValidations();
       if (this.errors.length) {
         return false;
       }
+
+       this.$store.dispatch("auth/login", {
+          email: this.email,
+          password: this.password,
+        });
+
+
       if (
         this.email === this.user.email &&
         this.password === this.user.password
       ) {
         this.$store.commit("auth/login");
-        location.reload();
-        this.$router.push("/products");
+
         toast.success("Login Successful");
       } else {
         toast.error("Invalid Credentials");
       }
     },
   },
-  mounted() {
-    var user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      this.user = user;
-    }
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    console.log(this.user);
   },
 };
 </script>
@@ -148,8 +150,8 @@ button {
   cursor: pointer;
   border-radius: 12px;
 }
-.signup{
- margin-left: 10%;
+.signup {
+  margin-left: 10%;
   font-family: cursive;
   font-size: 20px;
   margin-top: 0%;
