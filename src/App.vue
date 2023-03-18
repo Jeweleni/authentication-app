@@ -2,9 +2,7 @@
 
   <RouterView />
   <RouterLink />
-   <p class="footer">
-    @EMJCREATES AltSchool 3rd semester exam 2023
-  </p>
+
 
    
 </template>
