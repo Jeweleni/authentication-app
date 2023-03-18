@@ -25,24 +25,29 @@
         Don't have an account?
         <router-link to="/signup"> SignUp here</router-link>
       </p>
+          <footer-components />
     </div>
 
     <div class="right">
       <img src="../assets/login.jpeg" />
     </div>
+
   </div>
+
 </template>
 
 <script>
+import FooterComponents from "@/components/FooterComponents.vue";
 import NavBar from "@/components/NavBar.vue";
 import { RouterLink } from "vue-router";
 import SignupValidations from "@/utils/SignupValidations.js";
-import { useToast } from "vue-toastification";
+// import { useToast } from "vue-toastification";
 export default {
   name: "LoginPage",
   components: {
     NavBar,
     RouterLink,
+    FooterComponents,
   },
   data() {
     return {
@@ -55,7 +60,7 @@ export default {
   methods: {
     onLogin() {
       let validations = new SignupValidations(this.email, this.password);
-      const toast = useToast();
+      // const toast = useToast();
       this.errors = validations.checkValidations();
       if (this.errors.length) {
         return false;
@@ -67,16 +72,16 @@ export default {
         });
 
 
-      if (
-        this.email === this.user.email &&
-        this.password === this.user.password
-      ) {
-        this.$store.commit("auth/login");
+      // if (
+      //   this.email === this.user.email &&
+      //   this.password === this.user.password
+      // ) {
+      //   this.$store.commit("auth/login");
 
-        toast.success("Login Successful");
-      } else {
-        toast.error("Invalid Credentials");
-      }
+      //   toast.success("Login Successful");
+      // } else {
+      //   toast.error("Invalid Credentials");
+      // }
     },
   },
   created() {

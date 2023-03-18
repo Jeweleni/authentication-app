@@ -7,14 +7,17 @@
       <router-link to="/">Go to homepage</router-link>
     </button>
   </div>
+  <footer-components />
 </template>
 
 <script>
+import FooterComponents from "@/components/FooterComponents.vue";
 import { RouterLink } from "vue-router";
 export default{
     name: "ErrorPage",
     components: {
         RouterLink,
+        FooterComponents,
     },
     data(){
         return{

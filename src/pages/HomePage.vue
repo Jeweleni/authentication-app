@@ -7,20 +7,23 @@
         the digital you
       </h2>
       <button>
-      <router-link to="/login" class="button"> View Products </router-link>
+        <router-link to="/login" class="button"> View Products </router-link>
       </button>
     </div>
+<footer-components />
   </div>
 </template>
 
 <script>
 import NavBar from "../components/NavBar.vue";
-import {RouterLink} from "vue-router";
+import { RouterLink } from "vue-router";
+import FooterComponents from '@/components/FooterComponents.vue';
 export default {
   name: "HomePage",
   components: {
     NavBar,
     RouterLink,
+    FooterComponents,
   },
 };
 </script>
@@ -108,6 +111,17 @@ export default {
     border-radius: 10px;
     border: none;
   }
+  .footer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2px;
+    margin-top: -240px;
+    gap: 10px;
+    padding-top: 200px;
+    padding-left: 50px;
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -136,7 +150,7 @@ export default {
     border: none;
   }
   .footer {
-    padding-top: 360px;
+    padding-top: 330px;
   }
 }
 </style>

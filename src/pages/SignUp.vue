@@ -9,32 +9,31 @@
           <label for="name">Username</label>
           <input type="name" required id="name" v-model="username" />
         </div>
-         <div v-if="errors.username">
+        <div v-if="errors.username">
           <p class="error">{{ errors.username }}</p>
         </div>
         <div class="signup">
           <label for="email">Email</label>
           <input type="email" required id="email" v-model="email" />
         </div>
-          <div v-if="errors.email">
+        <div v-if="errors.email">
           <p class="error">{{ errors.email }}</p>
         </div>
         <div class="signup">
           <label for="password">Password</label>
           <input type="password" required id="password" v-model="password" />
         </div>
-         <div v-if="errors.password">
+        <div v-if="errors.password">
           <p class="error">{{ errors.password }}</p>
         </div>
 
-        <button type="submit">
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
       <p class="login">
         Already have an account?
         <router-link to="/login">Login here</router-link>
       </p>
+      <footer-components />
     </div>
 
     <div class="right">
@@ -44,9 +43,10 @@
 </template>
 
 <script>
+import FooterComponents from "@/components/FooterComponents.vue";
 import NavBar from "@/components/NavBar.vue";
 import { mapActions } from "vuex";
-import { RouterLink} from "vue-router";
+import { RouterLink } from "vue-router";
 import SignupValidations from "../utils/SignupValidations";
 import { useToast } from "vue-toastification";
 
@@ -55,7 +55,7 @@ export default {
   components: {
     NavBar,
     RouterLink,
-
+    FooterComponents,
   },
   data() {
     return {
@@ -121,7 +121,7 @@ export default {
 
 img {
   width: 100%;
-  height: 100vh;
+  height: 80%;
   border-radius: 6rem 0 0 2rem;
 }
 
@@ -137,7 +137,6 @@ h3 {
   color: rgb(12, 24, 13);
   font-family: "Roboto", sans-serif;
 }
-
 
 .signup input {
   width: 300px;
@@ -162,14 +161,13 @@ button {
   cursor: pointer;
   border-radius: 12px;
 }
-.login{
+.login {
   margin-left: 10%;
   font-family: cursive;
   font-size: 20px;
   margin-top: 0%;
   margin-left: auto;
   margin-right: auto;
-  
 }
 
 .login a {
@@ -196,7 +194,7 @@ button {
   }
 }
 
-@media screen and (max-width: 1024){
+@media screen and (max-width: 1024) {
   .main {
     flex-direction: column;
   }
@@ -213,6 +211,5 @@ button {
   button {
     width: 80%;
   }
-  
 }
 </style>

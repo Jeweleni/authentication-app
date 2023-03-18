@@ -1,21 +1,23 @@
 <template>
   <NavBar />
-  <RouterLink />
+  <!-- <RouterLink /> -->
   <div class="main">
+   
     <div class="product">
       <!-- <font-awesome-icon icon="fa-solid fa-user-secret" width="30" /> -->
       <div>
         <h1>
-          Welcome
-          <span class="user"> {{ user.name }}</span>
+          WELCOME
+          <!-- <span class="user"> {{ user.name }}</span> -->
         </h1>
         <h2 class="text">These are your available products</h2>
       </div>
     </div>
-  </div>
+
 
   <div>
-    <div v-if="loading">
+    <product-card />
+    <!-- <div v-if="loading">
       <p>Loading...</p>
     </div>
     <div v-else>
@@ -27,16 +29,21 @@
         :key="product.id"
       >
         <ProductCard :product="product" />
-      </div>
+      </div> -->
     </div>
   </div>
+      <footer-components />
+  <!-- </div> -->
+
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import ProductCard from "@/components/ProductCard.vue";
-import { RouterLink } from "vue-router";
-import { mapState } from "vuex";
+import FooterComponents from "@/components/FooterComponents.vue";
+import ProductCard from '@/components/ProductCard.vue';
+// import ProductCard from "@/components/ProductCard.vue";
+// import { RouterLink } from "vue-router";
+// import { mapState } from "vuex";
 // import authenTicatedUser from "../composables/authenTicatedUser";
 
 
@@ -44,41 +51,53 @@ export default {
   name: "ProductPage",
   components: {
     NavBar,
+ 
+    FooterComponents,
     ProductCard,
-    RouterLink,
+    // ProductCard,
+    // RouterLink,
   },
-  computed: {
-    // ...mapState("auth", {
-    //   user: (state) => state.user.username,
-    // }),
+  // computed: {
+  //   // ...mapState("auth", {
+  //   //   user: (state) => state.user.username,
+  //   // }),
 
-    user() {
-      return this.$store.getters["auth/user"]
-    },
-    ...mapState("products", {
-      loading: (state) => state.isLoading,
-      products: (state) => state.products.products,
-    }),
-  },
-  data() {
-    return {};
-  },
-  methods: {},
-  mounted() {
-    this.$store.dispatch("products/getProducts");
-    console.log(this.$store.getters["auth/user"]);
-  },
+  //   user() {
+  //     return this.$store.getters["auth/user"]
+  //   },
+  //   ...mapState("products", {
+  //     loading: (state) => state.isLoading,
+  //     products: (state) => state.products.products,
+  //   }),
+  // },
+  // data() {
+  //   return {};
+  // },
+  // methods: {},
+  // mounted() {
+  //   this.$store.dispatch("products/getProducts");
+  //   console.log(this.$store.getters["auth/user"]);
+  // },
 };
 </script>
 
 <style scoped>
 .main {
-  display: flex;
-  flex-direction: row;
-}
+  background: url("../assets/products.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 
-img {
   width: 100%;
-  height: 100vh;
+  display: flex;
+
+  flex-direction: column;
+}
+h1{
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+
 }
 </style>

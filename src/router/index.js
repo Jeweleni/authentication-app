@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.authIsRequired);
   var isAuthenticated = store.getters["auth/isAuthenticated"];
   console.log(isAuthenticated);
-  // const isAuthenticated = store.getters.isAuthenticated
+  
 
   if ("authIsRequired" in to.meta && requiresAuth && isAuthenticated !== true) {
     next("/login");
